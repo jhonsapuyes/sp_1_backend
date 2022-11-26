@@ -2,12 +2,14 @@
 
 const expres= require('express')
 const app= expres()
+const cors= require('cors')
 
 const puerto= 9000
 app.set('port', puerto)
 
 app.use(expres.urlencoded({extended:false}))
 app.use(expres.json())
+app.use(cors())
 
 
 
