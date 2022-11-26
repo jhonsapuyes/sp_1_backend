@@ -9,8 +9,9 @@ const usuarios= require('../datos/sample.json')
 
 const querys= require('./sql/process_sql')
 
-route.get('/',(req,res)=>{
-    const sql_get='SELECT * from deportes'
+//http://localhost:9000/api/usuarios
+route.get('/:table',(req,res)=>{
+    const sql_get='SELECT * from '+ req.params.table
     querys.conn.query(sql_get, (error,results,fields) => {
         if(error){
             throw error;
@@ -24,13 +25,14 @@ route.get('/',(req,res)=>{
     })
         //res.json(usuarios)
 })
-route.post('/',(req,res)=>{
+
+//http://localhost:9000/api/usuarios
+route.post('/:table',(req,res)=>{
     const {nombre,password}= req.body
     if(nombre&&password){
-        const {deporte}= req.body.deporte
 
-        const sql_post='INSERT INTO deportes SET ?'
-        querys.conn.query(sql_post, deporte, error => {
+        const sql_post='INSERT INTO '+req.params.table+' SET ?'
+        querys.conn.query(sql_post, [req.body], error => {
             if(error){
                 throw error;
             }
@@ -48,12 +50,15 @@ route.post('/',(req,res)=>{
         res.send("wrong request")
     }
 })
-route.put('/:id',(req,res)=>{
-    const {id}= req.params
-    const {nombre, password}= req.body
 
-    const sql_put= `UPDATE usuarios SET  NOMBRE= '${nombre}', PASSWORD= '${password}' WHERE ID= ${id}`
-    querys.conn.query(sql_put, error => {
+//http://localhost:9000/api/usuarios/ID/4
+route.put('/:table/:field/:id',(req,res)=>{
+    const {id}= req.params
+    const tabla= req.params.table
+    const campo_id= req.params.field
+
+    const sql_put= 'UPDATE '+tabla+' SET ?  WHERE '+campo_id+'= ?'
+    querys.conn.query(sql_put,[req.body,req.params.id], error => {
         if(error){
             throw error;
         }
@@ -78,10 +83,14 @@ route.put('/:id',(req,res)=>{
     //    res.status(500).json({error:"there was an error"})
     //}
 })
-route.delete('/:id',(req,res)=>{
-    const {id}= req.params
 
-    const sql_put= `DELETE FROM usuarios WHERE ID= ${id}`
+//http://localhost:9000/api/usuarios/ID/4
+route.delete('/:table/:field/:id',(req,res)=>{
+    const tabla= req.params.table
+    const campo_id= req.params.field
+    const id= req.params.id
+
+    const sql_put= 'DELETE FROM '+tabla+' WHERE '+campo_id+'='+id+''
     querys.conn.query(sql_put, error => {
         if(error){
             throw error;
