@@ -38,7 +38,7 @@ exports.add = async (req, res) => {
 
 exports.show= async (req, res,next) => {
   try {
-    const usuario = await usuarios.findById(req.params.id);
+    const usuario = await usuarios.find({usu_id:req.params.id});
     if(!usuario){
       res.status(404).json({
         message:'el usuario no existe'
@@ -55,7 +55,7 @@ exports.show= async (req, res,next) => {
 exports.update = async (req, res) => { 
   try {
     const usuario = await usuarios.findOneAndUpdate(
-      {_id:req.params.id},
+      {usu_id:req.params.id},
       req.body,
       {new:true}
     )
@@ -72,7 +72,7 @@ exports.update = async (req, res) => {
 exports.delete = async (req, res, next) => {
   const id = req.params.id
   try {
-    await usuarios.findByIdAndDelete({_id:id});
+    await usuarios.findOneAndDelete({usu_id:id});
     res.json({
       message:'usuario eliminado'
     });

@@ -180,7 +180,7 @@ exports.add = async (req, res) => {
 
 exports.show= async (req, res,next) => {
   try {
-    const marcador = await marcadores.findById(req.params.id);
+    const marcador = await marcadores.find({mar_id:req.params.id});
     if(!marcador){
       res.status(404).json({
         message:'el marcador no existe'
@@ -197,7 +197,7 @@ exports.show= async (req, res,next) => {
 exports.update = async (req, res) => { 
   try {
     const marcador = await marcadores.findOneAndUpdate(
-      {_id:req.params.id},
+      {mar_id:req.params.id},
       req.body,
       {new:true}
     )
@@ -214,7 +214,7 @@ exports.update = async (req, res) => {
 exports.delete = async (req, res, next) => {
   const id = req.params.id
   try {
-    await marcadores.findByIdAndDelete({_id:id});
+    await marcadores.findOneAndDelete({mar_id:id});
     res.json({
       message:'marcador eliminado'
     });

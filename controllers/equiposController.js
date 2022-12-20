@@ -47,7 +47,7 @@ exports.add = async (req, res) => {
 
 exports.show= async (req, res,next) => {
   try {
-    const equipo = await equipos.findById(req.params.id);
+    const equipo = await equipos.find({equi_id:req.params.id});
     if(!equipo){
       res.status(404).json({
         message:'el equipo no existe'
@@ -64,7 +64,7 @@ exports.show= async (req, res,next) => {
 exports.update = async (req, res) => { 
   try {
     const equipo = await equipos.findOneAndUpdate(
-      {_id:req.params.id},
+      {equi_id:req.params.id},
       req.body,
       {new:true}
     )
@@ -81,7 +81,7 @@ exports.update = async (req, res) => {
 exports.delete = async (req, res, next) => {
   const id = req.params.id
   try {
-    await equipos.findByIdAndDelete({_id:id});
+    await equipos.findOneAndDelete({equi_id:id});
     res.json({
       message:'equipo eliminado'
     });
