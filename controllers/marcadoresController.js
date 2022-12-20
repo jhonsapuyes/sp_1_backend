@@ -49,15 +49,16 @@ exports.limit = async (req, res)=>{
         }
       }, {
         '$project': {
-          'fecha': '$mar_fecha_event', 
-          'horaRegistra': '$mar_fecha_registro', 
-          'horaEvento': '$mar_hora_event', 
-          'horaRegisEvent': '$mar_hora_registro', 
-          'marca1': '$mar_equi_1', 
-          'marca2': '$mar_equi_2', 
-          'equi1': '$equipo1.equi_nombre', 
-          'equi2': '$equipo2.equi_nombre', 
-          'deporte': '$deporte.dep_nombre'
+          'mar_id':'$mar_id',
+          'mar_fecha_event': '$mar_fecha_event', 
+          'mar_fecha_registro': '$mar_fecha_registro', 
+          'mar_hora_event': '$mar_hora_event', 
+          'mar_hora_registro': '$mar_hora_registro', 
+          'mar_equi_1': '$mar_equi_1', 
+          'mar_equi_2': '$mar_equi_2', 
+          'equi_id_1': '$equipo1.equi_nombre', 
+          'equi_id_2': '$equipo2.equi_nombre', 
+          'mar_dep_id': '$deporte.dep_nombre'
         }
       }, {
         '$sort': {
@@ -74,8 +75,7 @@ exports.limit = async (req, res)=>{
     next();
   }
 }
-
-
+ 
 exports.marcadoresDeUsuario = async (req,res) =>{
   try {
     const colMarcadores = await marcadores.aggregate([
@@ -125,17 +125,17 @@ exports.marcadoresDeUsuario = async (req,res) =>{
           }
       }, {
           '$project': {
-              'fecha': '$mar_fecha_event', 
-              'horaRegistra': '$mar_fecha_registro', 
-              'horaEvento': '$mar_hora_event', 
-              'horaRegisEvent': '$mar_hora_registro', 
-              'marca1': '$mar_equi_1', 
-              'marca2': '$mar_equi_2', 
-              'equi1': '$equipo1.equi_nombre', 
-              'equi2': '$equipo2.equi_nombre', 
-              'deporte': '$deporte.dep_nombre', 
-              'usuario': '$usuario.usu_nombre',
-              'correo': '$usuario.usu_email'
+              'mar_fecha_event': '$mar_fecha_event', 
+              'mar_fecha_registro': '$mar_fecha_registro', 
+              'mar_hora_event': '$mar_hora_event', 
+              'mar_hora_registro': '$mar_hora_registro', 
+              'mar_equi_1': '$mar_equi_1', 
+              'mar_equi_2': '$mar_equi_2', 
+              'equi_id_1': '$equipo1.equi_nombre', 
+              'equi_id_2': '$equipo2.equi_nombre', 
+              'mar_dep_id': '$deporte.dep_nombre', 
+              'mar_usu_id': '$usuario.usu_nombre',
+              'mar_usu_email': '$usuario.usu_email'
           }
       }, {
           '$sort': {
@@ -152,7 +152,7 @@ exports.marcadoresDeUsuario = async (req,res) =>{
     }
   ]);
     res.json(colMarcadores);
-    console.log(colMarcadores)
+    //console.log(colMarcadores)
   } catch (error) {
     console.log(error);
     res.send(error);

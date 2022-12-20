@@ -1,5 +1,5 @@
 ###
-GET http://localhost:5040/marcadores/usuario_1/usuario_1@ HTTP/1.1
+GET http://localhost:5040/marcadores/5 HTTP/1.1
 
 
 ###
@@ -13,3 +13,4 @@ Content-Type: application/json
     "usu_nombres":"pruebanombre",
     "usu_apellidos":"pruebaapellido"
 }
+

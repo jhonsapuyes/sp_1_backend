@@ -2,7 +2,27 @@ const equipos = require("../models/equipos");
 
 exports.list = async (req, res) => {
   try {
-    const colEquipos = await equipos.find({});
+    const colEquipos = await equipos.aggregate([
+      {
+          '$lookup': {
+              'from': 'deportes', 
+              'localField': 'dep_id', 
+              'foreignField': 'dep_id', 
+              'as': 'dep_id'
+          }
+      }, {
+          '$unwind': {
+              'path': '$dep_id'
+          }
+      }, {
+          '$project': {
+              'equi_id': '$equi_id', 
+              'equi_nombre': '$equi_nombre', 
+              'equi_img': '$equi_img', 
+              'dep_id': '$dep_id.dep_nombre'
+          }
+      }
+  ]);
     res.json(colEquipos);
   } catch (error) {
     console.log(error);
