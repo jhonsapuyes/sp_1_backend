@@ -2,7 +2,55 @@ const marcadores = require("../models/marcadores");
 
 exports.list = async (req, res) => {
   try {
-    const colMarcadores = await marcadores.find({});
+    const colMarcadores = await marcadores.aggregate([{
+      '$lookup': {
+        'from': 'equipos', 
+        'localField': 'equi_id_1', 
+        'foreignField': 'equi_id', 
+        'as': 'equipo1'
+      }
+    }, {
+      '$lookup': {
+        'from': 'equipos', 
+        'localField': 'equi_id_2', 
+        'foreignField': 'equi_id', 
+        'as': 'equipo2'
+      }
+    }, {
+      '$lookup': {
+        'from': 'deportes', 
+        'localField': 'mar_dep_id', 
+        'foreignField': 'dep_id', 
+        'as': 'deporte'
+      }
+    }, {
+      '$unwind': {
+        'path': '$equipo1'
+      }
+    }, {
+      '$unwind': {
+        'path': '$equipo2'
+      }
+    }, {
+      '$unwind': {
+        'path': '$deporte'
+      }
+    }, {
+      '$project': {
+        'mar_id':'$mar_id',
+        'mar_fecha_event': '$mar_fecha_event', 
+        'mar_fecha_registro': '$mar_fecha_registro', 
+        'mar_hora_event': '$mar_hora_event', 
+        'mar_hora_registro': '$mar_hora_registro', 
+        'mar_equi_1': '$mar_equi_1', 
+        'mar_equi_2': '$mar_equi_2', 
+        'equi_id_1': '$equipo1.equi_nombre',
+        'equi_img_1':'$equipo1.equi_img', 
+        'equi_id_2': '$equipo2.equi_nombre',
+        'equi_img_2':'$equipo2.equi_img', 
+        'mar_dep_id': '$deporte.dep_nombre'
+      }
+    }]);
     res.json(colMarcadores);
   } catch (error) {
     console.log(error);
@@ -77,7 +125,76 @@ exports.limit = async (req, res)=>{
     next();
   }
 }
- 
+
+exports.limitDeporte = async (req, res)=>{
+  try{
+    const marcadoresLimit = await marcadores.aggregate([
+      {
+          '$lookup': {
+              'from': 'equipos', 
+              'localField': 'equi_id_1', 
+              'foreignField': 'equi_id', 
+              'as': 'equipo1'
+          }
+      }, {
+          '$match': {
+              'mar_dep_id': req.params.dep_id*1
+          }
+      }, {
+          '$lookup': {
+              'from': 'equipos', 
+              'localField': 'equi_id_2', 
+              'foreignField': 'equi_id', 
+              'as': 'equipo2'
+          }
+      }, {
+          '$lookup': {
+              'from': 'deportes', 
+              'localField': 'mar_dep_id', 
+              'foreignField': 'dep_id', 
+              'as': 'deporte'
+          }
+      }, {
+          '$unwind': {
+              'path': '$equipo1'
+          }
+      }, {
+          '$unwind': {
+              'path': '$equipo2'
+          }
+      }, {
+          '$unwind': {
+              'path': '$deporte'
+          }
+      }, {
+          '$project': {
+              'fecha': '$mar_fecha_event', 
+              'horaRegistra': '$mar_fecha_registro', 
+              'horaEvento': '$mar_hora_event', 
+              'horaRegisEvent': '$mar_hora_registro', 
+              'marca1': '$mar_equi_1', 
+              'marca2': '$mar_equi_2', 
+              'equi1': '$equipo1.equi_nombre', 
+              'equi2': '$equipo2.equi_nombre', 
+              'deporte': '$deporte.dep_nombre'
+          }
+      }, {
+          '$sort': {
+              'fecha': req.params.fechaorden*1
+          }
+      }, {
+          '$limit': req.params.lim*1
+      }
+  ])
+    res.json(marcadoresLimit);
+
+  }catch (error) {
+    console.log(error);
+    res.send(error);
+    next();
+  }
+}
+
 exports.marcadoresDeUsuario = async (req,res) =>{
   try {
     const colMarcadores = await marcadores.aggregate([

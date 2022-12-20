@@ -61,7 +61,7 @@ exports.update = async (req, res) => {
 exports.delete = async (req, res, next) => {
   const id = req.params.id
   try {
-    await deporte.findOneAndDelete({dep_id:id});
+    await deportes.findOneAndDelete({dep_id:id});
     res.json({
       message:'deporte eliminado'
     });

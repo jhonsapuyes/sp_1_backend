@@ -18,6 +18,7 @@ module.exports = ()=>{
     //router.get('/marcadores/:id',marcadoresController.show)
     router.get('/marcadores/:lim',marcadoresController.limit)
     router.get('/marcadores/:usuarioName/:usuarioCorreo',marcadoresController.marcadoresDeUsuario)
+    router.get('/marcadores/:fechaorden/:dep_id/:lim',marcadoresController.limitDeporte)
     router.put('/marcadores/:id',marcadoresController.update)
     router.delete('/marcadores/:id',marcadoresController.delete)
     router.get('/equipos',equiposController.list)
