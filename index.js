@@ -23,7 +23,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:true}))
 app.use(cors())
 
-app.use('/',routes())
+app.use('/api',routes())
 
 //app.get('/',(req,res)=>{
 //    res.send('mimongo 2022 g16')

@@ -11,6 +11,17 @@ exports.list = async (req, res) => {
   }
 };
 
+exports.inicioSesion = async(req,res)=>{
+  try {
+    const colUsuarios = await usuarios.find({usu_email:req.params.usu_email,usu_clave:req.params.usu_clave});
+    res.json(colUsuarios);
+  } catch (error) {
+    console.log(error);
+    res.send(error);
+    next();
+  }
+}
+
 exports.add = async (req, res) => {
   const usuario = new usuarios(req.body)
   try {
@@ -71,5 +82,6 @@ exports.delete = async (req, res, next) => {
     });
   }
 };
+
 
 

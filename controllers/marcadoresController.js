@@ -56,8 +56,10 @@ exports.limit = async (req, res)=>{
           'mar_hora_registro': '$mar_hora_registro', 
           'mar_equi_1': '$mar_equi_1', 
           'mar_equi_2': '$mar_equi_2', 
-          'equi_id_1': '$equipo1.equi_nombre', 
-          'equi_id_2': '$equipo2.equi_nombre', 
+          'equi_id_1': '$equipo1.equi_nombre',
+          'equi_img_1':'$equipo1.equi_img', 
+          'equi_id_2': '$equipo2.equi_nombre',
+          'equi_img_2':'$equipo2.equi_img', 
           'mar_dep_id': '$deporte.dep_nombre'
         }
       }, {
@@ -131,8 +133,10 @@ exports.marcadoresDeUsuario = async (req,res) =>{
               'mar_hora_registro': '$mar_hora_registro', 
               'mar_equi_1': '$mar_equi_1', 
               'mar_equi_2': '$mar_equi_2', 
-              'equi_id_1': '$equipo1.equi_nombre', 
-              'equi_id_2': '$equipo2.equi_nombre', 
+              'equi_id_1': '$equipo1.equi_nombre',
+              'equi_img_1':'$equipo1.equi_img', 
+              'equi_id_2': '$equipo2.equi_nombre',
+              'equi_img_2':'$equipo2.equi_img', 
               'mar_dep_id': '$deporte.dep_nombre', 
               'mar_usu_id': '$usuario.usu_nombre',
               'mar_usu_email': '$usuario.usu_email'
