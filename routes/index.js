@@ -10,6 +10,7 @@ module.exports = ()=>{
     router.get('/usuarios',usuariosController.list)
     router.post('/usuarios',usuariosController.add)
     router.get('/usuarios/:id',usuariosController.show)
+    router.get('/usuarios/all/all/all',usuariosController.numUsuarios)
     router.get('/usuarios/:usu_email/:usu_clave',usuariosController.inicioSesion)
     router.put('/usuarios/:id',usuariosController.update)
     router.delete('/usuarios/:id',usuariosController.delete)

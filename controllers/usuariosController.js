@@ -11,6 +11,20 @@ exports.list = async (req, res) => {
   }
 };
 
+exports.numUsuarios = async (req, res) => {
+  try {
+    const colUsuarios = await usuarios.aggregate([
+      {
+          '$count': 'usuarios'
+      }
+  ]);
+    res.json(colUsuarios);
+  } catch (error) {
+    console.log(error);
+    res.send(error);
+    next();
+  }
+};
 exports.inicioSesion = async(req,res)=>{
   try {
     const colUsuarios = await usuarios.find({usu_email:req.params.usu_email,usu_clave:req.params.usu_clave});
@@ -35,6 +49,7 @@ exports.add = async (req, res) => {
     next();
   }
 };
+
 
 exports.show= async (req, res,next) => {
   try {
